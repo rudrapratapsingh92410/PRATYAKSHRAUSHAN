@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rudra Pratap Singh — Frontend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f5;
+    --muted: #888899;
+    --accent: #7c6ef5;
+    --accent2: #a89cf7;
+    --accent-glow: rgba(124,110,245,0.18);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent2);
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 2rem 4rem;
+    max-width: 780px; margin: 0 auto;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .name { color: var(--accent2); }
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 22px; border-radius: 6px;
+    font-size: 14px; font-weight: 500;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border2);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+  .hero-scroll {
+    margin-top: 5rem;
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block; width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--border2), transparent);
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 2rem; max-width: 780px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600; letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .section-sub { font-size: 15px; color: var(--muted); max-width: 480px; line-height: 1.8; margin-bottom: 3rem; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .skill-cell {
+    background: var(--bg2);
+    padding: 1.25rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .skill-cell:hover { background: var(--bg3); }
+  .skill-cell .skill-icon { font-size: 22px; margin-bottom: 10px; }
+  .skill-cell .skill-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .skill-cell .skill-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: flex; flex-direction: column; gap: 1px; }
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 12px;
+  }
+  .project-card:hover { border-color: var(--border2); background: var(--bg3); }
+  .project-num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .project-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .project-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-family: var(--mono); font-size: 11px;
+    padding: 3px 10px; border-radius: 4px;
+    background: var(--accent-glow);
+    color: var(--accent2);
+    border: 1px solid rgba(124,110,245,0.2);
+  }
+  .project-link {
+    font-size: 13px; color: var(--muted);
+    border: 1px solid var(--border2);
+    border-radius: 6px; padding: 6px 14px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .project-link:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .about-text { font-size: 15px; color: var(--muted); line-height: 1.9; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .about-stats { display: flex; flex-direction: column; gap: 12px; }
+  .about-stat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .about-stat .stat-val { font-size: 1.6rem; font-weight: 600; color: var(--accent2); letter-spacing: -0.02em; }
+  .about-stat .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+  }
+  .contact-box h2 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .contact-box p { font-size: 15px; color: var(--muted); margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .contact-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .contact-item {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 13px;
+    color: var(--muted);
+    border: 1px solid var(--border2);
+    border-radius: 6px; padding: 8px 16px;
+    transition: all 0.2s;
+  }
+  .contact-item:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    width: 100%; height: 1px;
+    background: var(--border);
+    max-width: 780px; margin: 0 auto;
+  }
+
+  /* ── AVAILABILITY PILL ── */
+  .available-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; font-family: var(--mono);
+    color: #4ade80;
+    background: rgba(74,222,128,0.1);
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 20px; padding: 4px 12px;
+    margin-bottom: 1.5rem;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { gap: 1.25rem; }
+    .hero { padding: 5rem 1.25rem 3rem; }
+    section { padding: 4rem 1.25rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .project-card { grid-template-columns: 1fr; }
+    .contact-box { padding: 2rem 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">rudra.dev</span>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="available-pill"><span class="dot"></span>Available for remote work</div>
+  <div class="hero-eyebrow">Frontend Developer</div>
+  <h1>Hi, I'm <span class="name">Rudra Pratap Singh.</span><br>I build things for the web.</h1>
+  <p class="hero-desc">
+    I write <strong>clean HTML, CSS, and JavaScript</strong> — responsive, fast, and works on every device.
+    Based in Patna, India. Open to <strong>remote projects worldwide</strong>, including US clients.
+  </p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">Hire me →</a>
+    <a href="#work" class="btn btn-ghost">See my work</a>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">what I work with</div>
+  <h2 class="section-title">Skills</h2>
+  <p class="section-sub">Professional-level frontend development — no frameworks needed to build something great.</p>
+  <div class="skills-grid">
+    <div class="skill-cell">
+      <div class="skill-icon">🧱</div>
+      <div class="skill-name">HTML5</div>
+      <div class="skill-desc">Semantic markup, accessibility, SEO-friendly structure</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">CSS3</div>
+      <div class="skill-desc">Flexbox, Grid, animations, responsive design, custom properties</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-name">JavaScript</div>
+      <div class="skill-desc">DOM manipulation, APIs, ES6+, interactive UIs</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">📱</div>
+      <div class="skill-name">Responsive Design</div>
+      <div class="skill-desc">Mobile-first, works perfectly on all screen sizes</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">🚀</div>
+      <div class="skill-name">Performance</div>
+      <div class="skill-desc">Fast load times, optimized assets, clean code</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-icon">🛠</div>
+      <div class="skill-name">Git & Deploy</div>
+      <div class="skill-desc">GitHub, Vercel, Netlify — ship fast, iterate faster</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJECTS -->
+<section id="work">
+  <div class="section-label">selected projects</div>
+  <h2 class="section-title">Work</h2>
+  <p class="section-sub">Real projects built with HTML, CSS, and JavaScript. Add your live project links below.</p>
+
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div>
+        <div class="project-num">01</div>
+        <div class="project-title">Restaurant Landing Page</div>
+        <div class="project-desc">A fully responsive landing page for a local restaurant — online menu, photo gallery, Google Maps embed, and a contact form. Loads in under 2 seconds on mobile.</div>
+        <div class="project-tags">
+          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Responsive</span>
+        </div>
+      </div>
+      <a href="#" class="project-link">Live ↗</a>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <div class="project-num">02</div>
+        <div class="project-title">Personal Finance Tracker</div>
+        <div class="project-desc">A browser-based expense tracker with localStorage, charts, and category filtering. No backend, no frameworks — pure vanilla JS.</div>
+        <div class="project-tags">
+          <span class="tag">JavaScript</span><span class="tag">CSS Grid</span><span class="tag">localStorage</span>
+        </div>
+      </div>
+      <a href="#" class="project-link">Live ↗</a>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <div class="project-num">03</div>
+        <div class="project-title">Portfolio Template</div>
+        <div class="project-desc">A minimal, fast-loading portfolio template — dark mode, smooth scroll, mobile-first. Built to score 100 on Google PageSpeed.</div>
+        <div class="project-tags">
+          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Animations</span>
+        </div>
+      </div>
+      <a href="#" class="project-link">Live ↗</a>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">about me</div>
+  <h2 class="section-title">Who I am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p style="margin-bottom:1rem;">
+        I'm a <strong>self-taught frontend developer</strong> from Patna, Bihar. I've been building for the web seriously for the past year and reached a professional skill level in HTML, CSS, and JavaScript.
+      </p>
+      <p style="margin-bottom:1rem;">
+        I work <strong>fully remote</strong> and am comfortable with async communication across timezones — including US clients on EST/PST.
+      </p>
+      <p>
+        I care about <strong>clean code, fast websites, and real results</strong> for whoever I'm working with. Not just pretty — actually useful.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat">
+        <div class="stat-val">1yr+</div>
+        <div class="stat-label">Coding experience</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Core technologies mastered</div>
+      </div>
+      <div class="about-stat">
+        <div class="stat-val">100%</div>
+        <div class="stat-label">Remote — available worldwide</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-box">
+    <h2>Let's work together</h2>
+    <p>Have a website that needs fixing, a landing page to build, or a project in mind? I reply within a few hours.</p>
+    <div class="contact-links">
+      <a href="mailto:rudrapratapsingh@gmail.com" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+        rudrapratapsingh@gmail.com
+      </a>
+      <a href="https://github.com/rudrapratapsingh" target="_blank" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>
+      <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built by Rudra Pratap Singh · Patna, India · Open to remote work worldwide
+</footer>
+
+</body>
+</html>
