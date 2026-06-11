@@ -966,8 +966,8 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
   document.querySelectorAll('.metric-val[data-count]').forEach(el=>obs.observe(el));
 })();
 
-/* ── Contact form send ── */
-function sendMsg(){
+/* ── Contact form send via Formspree ── */
+async function sendMsg(){
   const name=document.getElementById('fName').value.trim();
   const email=document.getElementById('fEmail').value.trim();
   const phone=document.getElementById('fPhone').value.trim();
@@ -975,6 +975,8 @@ function sendMsg(){
   const msg=document.getElementById('fMsg').value.trim();
   const st=document.getElementById('fStatus');
   const btn=document.getElementById('sendBtn');
+
+  // Validation
   if(!name||!email||!msg){
     st.className='form-msg err';
     st.textContent='// Please fill in name, email, and message.';return;
@@ -983,19 +985,66 @@ function sendMsg(){
     st.className='form-msg err';
     st.textContent='// That email address doesn\'t look right.';return;
   }
-  btn.disabled=true;btn.textContent='Opening…';
-  const subj=encodeURIComponent(`New project inquiry from ${name}`);
-  const lines=[`Name: ${name}`,`Email: ${email}`,phone?`Phone: ${phone}`:'',budget?`Budget: ${budget}`:'','','Message:',msg,'','---','Sent from pratyaksh.dev contact form'].filter(Boolean);
-  window.location.href=`mailto:rudrapratapsingh92410@gmail.com?subject=${subj}&body=${encodeURIComponent(lines.join('\n'))}`;
-  const waText=encodeURIComponent(`Hi Pratyaksh! I found your portfolio and have a project for you.\n\nName: ${name}\nEmail: ${email}\n${phone?'Phone: '+phone+'\n':''}${budget?'Budget: '+budget+'\n':''}\nMessage:\n${msg}`);
-  setTimeout(()=>{
-    st.className='form-msg ok';
-    st.innerHTML=`✓ Email client opened! You can also reach me on <a href="https://wa.me/919241050439?text=${waText}" target="_blank" style="color:var(--b);text-decoration:underline">WhatsApp ↗</a>`;
+
+  // Loading state
+  btn.disabled=true;
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .8s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…';
+  st.className='form-msg';st.textContent='';
+
+  try {
+    const res = await fetch('https://formspree.io/f/xnjygpja', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        name, email,
+        phone: phone||'Not provided',
+        budget: budget||'Not provided',
+        message: msg,
+        _subject: `New project inquiry from ${name}`
+      })
+    });
+
+    if(res.ok){
+      // Success — clear form
+      ['fName','fEmail','fPhone','fBudget','fMsg'].forEach(id=>document.getElementById(id).value='');
+
+      // Build WhatsApp deep-link as bonus channel
+      const waText=encodeURIComponent(
+        `Hi Pratyaksh! I just sent you a message through your website.\n\nName: ${name}\nEmail: ${email}\n`+
+        (phone?`Phone: ${phone}\n`:'')+
+        (budget?`Budget: ${budget}\n`:'')+
+        `\nMessage:\n${msg}`
+      );
+
+      st.className='form-msg ok';
+      st.innerHTML=
+        `✓ Message sent! I'll reply within 24 hours.<br>`+
+        `<span style="margin-top:6px;display:block">Want a faster reply? `+
+        `<a href="https://wa.me/919241050439?text=${waText}" target="_blank" `+
+        `style="color:var(--b);text-decoration:underline">Also send on WhatsApp ↗</a></span>`;
+      btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Sent!';
+      btn.style.background='linear-gradient(135deg,#22c55e,#16a34a)';
+      setTimeout(()=>{
+        btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+        btn.style.background='';
+        btn.disabled=false;
+      },4000);
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(err){
+    st.className='form-msg err';
+    st.textContent='// Something went wrong. Please email me directly at rudrapratapsingh92410@gmail.com';
     btn.disabled=false;
-    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
-  },900);
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Try Again';
+  }
 }
 document.getElementById('fMsg').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)sendMsg()});
+
+/* spinner keyframe */
+const spinStyle=document.createElement('style');
+spinStyle.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(spinStyle);
 </script>
 </body>
 </html>
